@@ -1,20 +1,12 @@
-import loadPdfContent from './loadPdfContent.mjs';
-import fs from 'fs';
+import pdfResize from './crop.mjs';
 
-export async function pdfResize() {
-
-  const pdfDoc = await loadPdfContent();
-  const pages = pdfDoc.getPages();  
-  const page = pages[0];
-  const { x, y, width, height } = page.getMediaBox(); //mediaBox
-
-  //console.log(x, y, width, height);  
-  page.setMediaBox(0, 0, 290, 432);
-
-  const pdfBytes = await pdfDoc.save();
-  const path = './modified.pdf';
-  fs.writeFileSync(path, pdfBytes);
-  console.log('Modified PDF file written to:', path);
+const params = {
+    url: 'https://api.multiorders.com/labels/Blank90783-9000011_mass.pdf',
+    xLowLeftConerMBox: 0, //The x coordinate of the lower left corner of the new MediaBox.
+    yLowLeftConerMBox: 0, //The y coordinate of the lower left corner of the new MediaBox.
+    widthMBox: 290, //The width of the new MediaBox
+    heightMBox: 300 //The height of the new MediaBox
 }
 
-pdfResize();
+
+pdfResize(params);
